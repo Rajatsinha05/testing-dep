@@ -12,7 +12,9 @@ const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
   key_secret: process.env.RAZORPAY_SECRET,
 });
-
+app.get("/", (req, res) => {
+  res.send({ msg: "Hello World" });
+});
 app.post("/create-order", async (req, res) => {
   try {
     const options = {
@@ -35,6 +37,7 @@ app.post("/verify-payment", (req, res) => {
   let hmac = crypto.createHmac("sha256", key_secret);
   hmac.update(order_id + "|" + payment_id);
   const generated_signature = hmac.digest("hex");
+  console.log(generated_signature, signature);
 
   if (generated_signature === signature) {
     // Payment is successful
